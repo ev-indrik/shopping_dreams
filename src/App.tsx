@@ -1,47 +1,53 @@
 import "./App.css";
 
+type CategoryItem = {
+  id: number;
+  title: string;
+  image: string;
+};
+
 const App = () => {
+  const categories: CategoryItem[] = [
+    {
+      id: 1,
+      title: "Hats",
+      image: "",
+    },
+    {
+      id: 2,
+      title: "Jackets",
+      image: "",
+    },
+    {
+      id: 3,
+      title: "Sneakers",
+      image: "",
+    },
+    {
+      id: 4,
+      title: "Women's",
+      image: "",
+    },
+    {
+      id: 5,
+      title: "Men's",
+      image: "",
+    },
+  ];
+
   return (
     <div className="categories-container">
-      <div className="category-container">
-        <img src="#" alt="category_img" />
-        <div className="category-body-container">
-          <h2>Hats</h2>
-          <p>Shop now</p>
-        </div>
-      </div>
-
-      <div className="category-container">
-        <img src="#" alt="category_img" />
-        <div className="category-body-container">
-          <h2>Jackets</h2>
-          <p>Shop now</p>
-        </div>
-      </div>
-
-      <div className="category-container">
-        <img src="#" alt="category_img" />
-        <div className="category-body-container">
-          <h2>Sneakers</h2>
-          <p>Shop now</p>
-        </div>
-      </div>
-
-      <div className="category-container">
-        <img src="#" alt="category_img" />
-        <div className="category-body-container">
-          <h2>Women</h2>
-          <p>Shop now</p>
-        </div>
-      </div>
-
-      <div className="category-container">
-        <img src="#" alt="category_img" />
-        <div className="category-body-container">
-          <h2>Men</h2>
-          <p>Shop now</p>
-        </div>
-      </div>
+      {categories.map((category) => {
+        return (
+          <div className="category-container" key={category.id}>
+            <img src={category.image} alt="category_img" />
+            <div className="category-body-container">
+              <h2>{category.title}</h2>
+              <p>Shop now</p>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };
