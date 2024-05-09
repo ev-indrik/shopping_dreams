@@ -4,45 +4,48 @@ import "./categories_style.scss";
 type CategoryItem = {
   id: number;
   title: string;
-  image: string;
+  imageUrl: string;
 };
 
 const App = () => {
   const categories: CategoryItem[] = [
     {
       id: 1,
-      title: "Hats",
-      image: "",
+      title: "hats",
+      imageUrl: "https://i.ibb.co/cvpntL1/hats.png",
     },
     {
       id: 2,
-      title: "Jackets",
-      image: "",
+      title: "jackets",
+      imageUrl: "https://i.ibb.co/px2tCc3/jackets.png",
     },
     {
       id: 3,
-      title: "Sneakers",
-      image: "",
+      title: "sneakers",
+      imageUrl: "https://i.ibb.co/0jqHpnp/sneakers.png",
     },
     {
       id: 4,
-      title: "Women's",
-      image: "",
+      title: "womens",
+      imageUrl: "https://i.ibb.co/GCCdy8t/womens.png",
     },
     {
       id: 5,
-      title: "Men's",
-      image: "",
+      title: "mens",
+      imageUrl: "https://i.ibb.co/R70vBrQ/men.png",
     },
   ];
 
   return (
     <div className="categories-container">
-      {categories.map(({ id, title, image }) => (
+      {categories.map(({ id, title, imageUrl }) => (
         <div className="category-container" key={id}>
-          <div className="background-image">
-            <img src={image} alt="category_img" />
-          </div>
+          <div
+            className="background-image"
+            style={{
+              backgroundImage: `url(${imageUrl})`,
+            }}
+          />
           <div className="category-body-container">
             <h2>{title}</h2>
             <p>Shop now</p>
