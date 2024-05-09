@@ -1,4 +1,5 @@
 import "./App.css";
+import "./categories_style.scss";
 
 type CategoryItem = {
   id: number;
@@ -37,17 +38,17 @@ const App = () => {
 
   return (
     <div className="categories-container">
-      {categories.map((category) => {
-        return (
-          <div className="category-container" key={category.id}>
-            <img src={category.image} alt="category_img" />
-            <div className="category-body-container">
-              <h2>{category.title}</h2>
-              <p>Shop now</p>
-            </div>
+      {categories.map(({ id, title, image }) => (
+        <div className="category-container" key={id}>
+          <div className="background-image">
+            <img src={image} alt="category_img" />
           </div>
-        );
-      })}
+          <div className="category-body-container">
+            <h2>{title}</h2>
+            <p>Shop now</p>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
