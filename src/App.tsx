@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import Directory from "./components/directory/directory.component";
 
 export type CategoryItemType = {

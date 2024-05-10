@@ -19,7 +19,7 @@ const CategoryItem: FC<Props> = ({ category }) => {
       />
       <div className="category-body-container">
         <h2>{title}</h2>
-        <p>Shop now</p>
+        <p className="text_to_shop">Shop now</p>
       </div>
     </div>
   );
