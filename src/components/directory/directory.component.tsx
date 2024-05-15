@@ -11,7 +11,7 @@ const Directory: FC<Props> = ({ data }) => {
   return (
     <div className="directory-container">
       {data.map((category) => (
-        <CategoryItem category={category} />
+        <CategoryItem category={category} key={category.id} />
       ))}
     </div>
   );

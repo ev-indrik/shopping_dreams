@@ -7,10 +7,10 @@ type Props = {
 };
 
 const CategoryItem: FC<Props> = ({ category }) => {
-  const { id, title, imageUrl } = category;
+  const { title, imageUrl } = category;
 
   return (
-    <div className="category-container" key={id}>
+    <div className="category-container">
       <div
         className="background-image"
         style={{
