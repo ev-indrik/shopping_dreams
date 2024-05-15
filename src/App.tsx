@@ -1,5 +1,5 @@
 import "./App.scss";
-import Directory from "./components/directory/directory.component";
+import { Routes, Route } from "react-router-dom";
 import Home from "./components/routes/home/home.component";
 
 export type CategoryItemType = {
@@ -9,7 +9,11 @@ export type CategoryItemType = {
 };
 
 const App = () => {
-  return <Home />;
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+    </Routes>
+  );
 };
 
 export default App;
