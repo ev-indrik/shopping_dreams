@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
-import { Icon } from "../../components/icons";
+import CrwnLogo from "../../assets/crown.svg";
 
 const Navigation = () => {
   return (
@@ -7,7 +7,7 @@ const Navigation = () => {
       <div className="navigation">
         <div className="nav-links-container">
           <Link className="logo-container" to="/">
-            <Icon type={"paper_plane"} />
+            <img src={CrwnLogo} alt="main-logo" />
           </Link>
           <Link className="nav-link" to="/shop">
             SHOP
