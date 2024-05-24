@@ -30,10 +30,8 @@ export const signinWithGooglePopup = () => signInWithPopup(auth, provider);
 export const db = getFirestore();
 export const createUserDocumentFromAuth = async (userAuth: any) => {
   const userDocRef = doc(db, "users", userAuth.uid);
-  //   console.log(userDocRef);
 
   const userSnapshot: any = await getDoc(userDocRef);
-  console.log(userSnapshot);
 
   // if user data doesn't exist create/set the document with user data from userAuth in my collection
   if (!userSnapshot.exists()) {
