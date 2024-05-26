@@ -28,7 +28,7 @@ export const auth = getAuth();
 export const signinWithGooglePopup = () =>
   signInWithPopup(auth, googleProvider);
 export const signinWithGoogleRedirect = () =>
-  signInWithRedirect(auth, provider);
+  signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
 export const createUserDocumentFromAuth = async (userAuth: any) => {
