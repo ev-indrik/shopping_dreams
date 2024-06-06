@@ -1,7 +1,7 @@
 import { BaseSyntheticEvent, useState } from "react";
 import { createAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 
-const defaultFormFileds: Record<string, string> = {
+const defaultFormFields = {
   displayName: "",
   email: "",
   password: "",
@@ -9,60 +9,58 @@ const defaultFormFileds: Record<string, string> = {
 };
 
 const SignUpForm = () => {
-  const [formFields, setFormFields] = useState(defaultFormFileds);
+  const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: BaseSyntheticEvent) => {
     event.preventDefault();
+
     if (password !== confirmPassword) {
-      alert("Password does not match");
+      alert("Passwords do not match");
       return;
     }
+
     try {
-      const response = await createAuthUserWithEmailAndPassword(
+      const userCredential = await createAuthUserWithEmailAndPassword(
         email,
         password
       );
-      console.log(response);
+      if (userCredential) {
+        console.log("User created successfully:", userCredential.user);
+      }
     } catch (error) {
-      console.log("Unable to create user", error);
+      console.error("Unable to create user:", error);
     }
   };
 
   const handleChange = (event: BaseSyntheticEvent) => {
     const { name, value } = event.target;
-    console.log(name);
-    console.log(value);
     setFormFields({ ...formFields, [name]: value });
   };
 
   return (
     <div>
-      <h2>{"Sigh Up with Your Email & Password"}</h2>
-      <form
-        onSubmit={() => {
-          handleSubmit;
-        }}
-      >
-        <label>{"Display Name"}</label>
+      <h2>Sign Up with Your Email & Password</h2>
+      <form onSubmit={handleSubmit}>
+        <label>Display Name</label>
         <input
-          type={"text"}
+          type="text"
           required
           onChange={handleChange}
-          name={"displayName"}
+          name="displayName"
           value={displayName}
         />
 
-        <label>{"Email"}</label>
+        <label>Email</label>
         <input
-          type={"email"}
+          type="email"
           required
           onChange={handleChange}
-          name={"email"}
+          name="email"
           value={email}
         />
 
-        <label>{"Password"}</label>
+        <label>Password</label>
         <input
           type="password"
           required
@@ -71,7 +69,7 @@ const SignUpForm = () => {
           value={password}
         />
 
-        <label>{"Confirm Password"}</label>
+        <label>Confirm Password</label>
         <input
           type="password"
           required
@@ -79,7 +77,7 @@ const SignUpForm = () => {
           name="confirmPassword"
           value={confirmPassword}
         />
-        <button type={"submit"}>{"Sign Up"}</button>
+        <button type="submit">Sign Up</button>
       </form>
     </div>
   );

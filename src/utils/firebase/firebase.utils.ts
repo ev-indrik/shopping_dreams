@@ -5,10 +5,12 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  UserCredential,
 } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBgeK5zBHpBuwfgqJb2yhxhY0TOJ0bXVQQ",
   authDomain: "shopping-dreams-9fcea.firebaseapp.com",
@@ -18,8 +20,10 @@ const firebaseConfig = {
   appId: "1:702737680930:web:bc6656b515ecbddb12987b",
 };
 
+// Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
+// Setup Google authentication
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({
   prompt: "select_account",
@@ -31,15 +35,14 @@ export const signinWithGooglePopup = () =>
 export const signinWithGoogleRedirect = () =>
   signInWithRedirect(auth, googleProvider);
 
+// Firestore database
 export const db = getFirestore();
 export const createUserDocumentFromAuth = async (userAuth: any) => {
   if (!userAuth) return;
 
   const userDocRef = doc(db, "users", userAuth.uid);
+  const userSnapshot = await getDoc(userDocRef);
 
-  const userSnapshot: any = await getDoc(userDocRef);
-
-  // if user data doesn't exist create/set the document with user data from userAuth in my collection - else return userDocRef
   if (!userSnapshot.exists()) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
@@ -51,17 +54,28 @@ export const createUserDocumentFromAuth = async (userAuth: any) => {
         createdAt,
       });
     } catch (error: any) {
-      console.log("Error while creating user:", error.message);
+      console.error("Error creating the user:", error.message);
     }
   }
 
   return userDocRef;
 };
 
-export const createAuthUserWithEmailAndPassword: any = async (
+export const createAuthUserWithEmailAndPassword = async (
   email: string,
-  password: any
-) => {
+  password: string
+): Promise<UserCredential | void> => {
   if (!email || !password) return;
-  return await createUserWithEmailAndPassword(auth, email, password);
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    await createUserDocumentFromAuth(userCredential.user);
+    return userCredential;
+  } catch (error) {
+    console.error("Error creating the user with email and password:", error);
+  }
 };
