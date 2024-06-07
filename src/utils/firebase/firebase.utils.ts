@@ -37,7 +37,10 @@ export const signinWithGoogleRedirect = () =>
 
 // Firestore database
 export const db = getFirestore();
-export const createUserDocumentFromAuth = async (userAuth: any) => {
+export const createUserDocumentFromAuth = async (
+  userAuth: any,
+  additionalInformation = {}
+) => {
   if (!userAuth) return;
 
   const userDocRef = doc(db, "users", userAuth.uid);
@@ -52,19 +55,47 @@ export const createUserDocumentFromAuth = async (userAuth: any) => {
         displayName,
         email,
         createdAt,
+        ...additionalInformation,
       });
     } catch (error: any) {
-      console.error("Error creating the user:", error.message);
+      console.error("Error creating the user:", error);
     }
   }
 
   return userDocRef;
 };
 
+export const createUserDocumentFromAuth2: (
+  a: any,
+  b: { displayName: string }
+) => Promise<string | undefined> = async (userAuth, additionalInformation) => {
+  if (!userAuth) return;
+
+  const userDocRef = doc(db, "users", userAuth.uid);
+  const userSnapshot = await getDoc(userDocRef);
+
+  console.log("USER SNAPSHOT ====>", additionalInformation);
+  console.log("USER SNAPSHOT", userSnapshot);
+  console.log("USER SNAPSHOT exist", userSnapshot.exists());
+
+  const createdAt = new Date();
+  const { email } = userAuth;
+  try {
+    await setDoc(userDocRef, {
+      email,
+      createdAt,
+      displayName: additionalInformation.displayName,
+    });
+  } catch (error: any) {
+    console.error("Error creating the user:", error);
+  }
+  return "ok";
+};
+
 export const createAuthUserWithEmailAndPassword = async (
   email: string,
   password: string
-): Promise<UserCredential | void> => {
+): Promise<UserCredential | undefined> => {
   if (!email || !password) return;
 
   try {
@@ -75,7 +106,7 @@ export const createAuthUserWithEmailAndPassword = async (
     );
     await createUserDocumentFromAuth(userCredential.user);
     return userCredential;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error creating the user with email and password:", error);
   }
 };

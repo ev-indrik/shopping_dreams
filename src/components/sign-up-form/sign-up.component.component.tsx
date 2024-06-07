@@ -1,5 +1,10 @@
 import { BaseSyntheticEvent, useState } from "react";
-import { createAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
+import {
+  createAuthUserWithEmailAndPassword,
+  createUserDocumentFromAuth,
+  createUserDocumentFromAuth2,
+} from "../../utils/firebase/firebase.utils";
+import { UserCredential } from "firebase/auth";
 
 const defaultFormFields = {
   displayName: "",
@@ -8,9 +13,13 @@ const defaultFormFields = {
   confirmPassword: "",
 };
 
-const SignUpForm = () => {
+const SignUpForm: React.FC = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
+
+  const resetFormFields = () => {
+    setFormFields(defaultFormFields);
+  };
 
   const handleSubmit = async (event: BaseSyntheticEvent) => {
     event.preventDefault();
@@ -21,15 +30,30 @@ const SignUpForm = () => {
     }
 
     try {
-      const userCredential = await createAuthUserWithEmailAndPassword(
+      const response = await createAuthUserWithEmailAndPassword(
         email,
         password
       );
-      if (userCredential) {
-        console.log("User created successfully:", userCredential.user);
+      console.log(response);
+
+      const userData = response as UserCredential;
+      const { user } = userData;
+      console.log("USER", user);
+
+      const res2 = await createUserDocumentFromAuth2(user, { displayName });
+      console.log("RES2===>", res2);
+
+      // resetFormFields();
+    } catch (error: unknown) {
+      if (
+        error instanceof Error &&
+        "code" in error &&
+        (error as any).code === "auth/email-already-in-use"
+      ) {
+        alert("This email is already in use");
+      } else {
+        console.error("Unable to create user:", error);
       }
-    } catch (error) {
-      console.error("Unable to create user:", error);
     }
   };
 
